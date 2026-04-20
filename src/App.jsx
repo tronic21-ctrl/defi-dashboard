@@ -3,6 +3,7 @@ import { useAccount, useBalance } from 'wagmi'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import './App.css'
+import TransactionList from './components/TransactionList'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -105,6 +106,7 @@ function App() {
                 index={3}
               />
             </div>
+            <TransactionList address={address} />
           </>
         )}
       </main>
