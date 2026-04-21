@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import './App.css'
 import TransactionList from './components/TransactionList'
+import IPFSUpload from './components/IPFSUpload'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -107,6 +108,7 @@ function App() {
               />
             </div>
             <TransactionList address={address} />
+            <IPFSUpload />
           </>
         )}
       </main>
