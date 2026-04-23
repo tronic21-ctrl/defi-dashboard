@@ -55,11 +55,13 @@ function App() {
       <div className="bg-grid" />
 
       <header className="app-header">
-        <div className="header-left">
-          <span className="logo-dot" />
-          <h1 className="app-title">Tronic DeFi Dashboard</h1>
-          <span className="sepolia-badge">Sepolia Testnet</span>
-        </div>
+      <div className="header-left">
+        <span className="logo-dot" />
+          <div className="header-title-group">
+            <h1 className="app-title">Tronic DeFi Dashboard</h1>
+            <span className="sepolia-badge">Sepolia Testnet</span>
+          </div>
+      </div>
         <div className="header-right">
           <ConnectButton />
         </div>
