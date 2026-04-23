@@ -57,7 +57,8 @@ function App() {
       <header className="app-header">
         <div className="header-left">
           <span className="logo-dot" />
-          <h1 className="app-title">DeFi Dashboard</h1>
+          <h1 className="app-title">Tronic DeFi Dashboard</h1>
+          <span className="sepolia-badge">Sepolia Testnet</span>
         </div>
         <div className="header-right">
           <ConnectButton />
