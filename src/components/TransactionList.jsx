@@ -7,13 +7,14 @@ function TransactionList({ address }) {
   const [txs, setTxs] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [showAll, setShowAll] = useState(false)  // ← tambah ini
 
   useEffect(() => {
     if (!address) return
 
     setLoading(true)
     fetch(
-      `https://api.etherscan.io/v2/api?chainid=11155111&module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=${API_KEY}`
+      `https://api.etherscan.io/v2/api?chainid=11155111&module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=20&sort=desc&apikey=${API_KEY}`
     )
       .then(res => res.json())
       .then(data => {
@@ -59,11 +60,14 @@ function TransactionList({ address }) {
     </div>
   )
 
+  // Tampilkan 5 dulu, kalau showAll tampilkan semua
+  const visibleTxs = showAll ? txs : txs.slice(0, 5)
+
   return (
     <div className="tx-section">
       <h2 className="section-title">Transaction History</h2>
       <div className="tx-list">
-        {txs.map((tx, i) => {
+        {visibleTxs.map((tx, i) => {
           const isOut = tx.from.toLowerCase() === address.toLowerCase()
           const isFailed = tx.isError === '1'
 
@@ -80,13 +84,13 @@ function TransactionList({ address }) {
                   {isFailed ? 'FAILED' : isOut ? 'OUT' : 'IN'}
                 </span>
                 <div className="tx-meta">
-                    <a
-                      className="tx-hash"
-                      href={`https://sepolia.etherscan.io/tx/${tx.hash}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {shortHash(tx.hash)}
+                  <a
+                    className="tx-hash"
+                    href={`https://sepolia.etherscan.io/tx/${tx.hash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {shortHash(tx.hash)}
                   </a>
                   <span className="tx-time">{formatTime(tx.timeStamp)}</span>
                 </div>
@@ -103,6 +107,30 @@ function TransactionList({ address }) {
           )
         })}
       </div>
+
+      {/* Show More / Show Less button */}
+      {txs.length > 5 && (
+        <button
+          onClick={() => setShowAll(!showAll)}
+          style={{
+            width: '100%',
+            marginTop: '12px',
+            padding: '10px',
+            background: 'var(--cyan-dim)',
+            border: '1px solid var(--border-cyan)',
+            borderRadius: '10px',
+            color: 'var(--cyan)',
+            fontSize: '13px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            transition: 'background 0.2s',
+          }}
+          onMouseEnter={e => e.target.style.background = 'rgba(56, 189, 248, 0.25)'}
+          onMouseLeave={e => e.target.style.background = 'var(--cyan-dim)'}
+        >
+          {showAll ? '▲ Show Less' : `▼ Show More (${txs.length - 5} more)`}
+        </button>
+      )}
     </div>
   )
 }

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import './App.css'
 import TransactionList from './components/TransactionList'
 import IPFSUpload from './components/IPFSUpload'
+import StakingAnalytics from './components/StakingAnalytics'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -112,6 +113,7 @@ function App() {
             </div>
             <TransactionList address={address} />
             <IPFSUpload />
+            <StakingAnalytics />
           </>
         )}
       </main>
