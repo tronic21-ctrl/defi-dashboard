@@ -6,6 +6,8 @@ import './App.css'
 import TransactionList from './components/TransactionList'
 import IPFSUpload from './components/IPFSUpload'
 import StakingAnalytics from './components/StakingAnalytics'
+import { useLang } from './context/LanguageContext'
+import t from './utils/translations'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -34,6 +36,8 @@ function StatCard({ label, value, sub, index }) {
 
 function App() {
   const { address, isConnected } = useAccount()
+  const { lang, toggleLang } = useLang()
+  const tx = t[lang]
   const { data: balanceData } = useBalance({ address })
   const [ethPrice, setEthPrice] = useState(null)
 
@@ -64,8 +68,8 @@ function App() {
           </div>
       </div>
         <div className="header-right">
-          <ConnectButton />
-        </div>
+        <ConnectButton />
+      </div>
       </header>
 
       <main className="app-main">
@@ -77,7 +81,7 @@ function App() {
             transition={{ duration: 0.5 }}
           >
             <div className="empty-icon">⬡</div>
-            <p className="empty-text">Connect your wallet to view your portfolio</p>
+            <p className="empty-text">{tx.connectWallet}</p>
           </motion.div>
         ) : (
           <>
@@ -88,26 +92,48 @@ function App() {
               animate="visible"
               custom={0}
             >
-              <span className="address-label">Connected Address</span>
+              <span className="address-label">{tx.connectedAddress}</span>
               <span className="address-value">{address}</span>
             </motion.div>
 
+            {/* Language Toggle */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+              <button
+                onClick={toggleLang}
+                onMouseEnter={e => e.target.style.background = 'rgba(56, 189, 248, 0.25)'}
+                onMouseLeave={e => e.target.style.background = 'var(--cyan-dim)'}
+                style={{
+                  background: 'var(--cyan-dim)',
+                  border: '1px solid var(--border-cyan)',
+                  borderRadius: '8px',
+                  padding: '6px 14px',
+                  color: 'var(--cyan)',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'background 0.2s',
+                }}
+              >
+                {lang === 'en' ? '🇮🇩 ID' : '🇬🇧 EN'}
+              </button>
+            </div>
+
             <div className="stats-grid">
               <StatCard
-                label="ETH Balance"
+                label={tx.ethBalance}
                 value={balanceData ? `${parseFloat(balanceData.formatted).toFixed(4)} ETH` : '...'}
                 index={1}
               />
               <StatCard
-                label="ETH Price"
+                label={tx.ethPrice}
                 value={ethPrice ? `$${ethPrice.toLocaleString('en-US')}` : '...'}
                 sub="via CoinGecko"
                 index={2}
               />
               <StatCard
-                label="Portfolio Value"
+                label={tx.portfolioValue}
                 value={portfolioValue ? `$${portfolioValue}` : '...'}
-                sub="ETH holdings in USD"
+                sub={tx.ethHoldings}
                 index={3}
               />
             </div>

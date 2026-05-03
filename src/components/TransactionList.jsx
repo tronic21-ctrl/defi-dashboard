@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { useLang } from '../context/LanguageContext'
+import t from '../utils/translations'
 
 const API_KEY = import.meta.env.VITE_ETHERSCAN_API_KEY
 
@@ -8,6 +10,8 @@ function TransactionList({ address }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [showAll, setShowAll] = useState(false)  // ← tambah ini
+  const { lang } = useLang()
+  const tx = t[lang]
 
   useEffect(() => {
     if (!address) return
@@ -48,15 +52,15 @@ function TransactionList({ address }) {
 
   if (loading) return (
     <div className="tx-section">
-      <h2 className="section-title">Transaction History</h2>
-      <div className="tx-loading">Fetching transactions...</div>
+      <h2 className="section-title">{tx.txHistory}</h2>
+      <div className="tx-loading">{tx.fetching}</div>
     </div>
   )
 
   if (error) return (
     <div className="tx-section">
-      <h2 className="section-title">Transaction History</h2>
-      <div className="tx-empty">{error}</div>
+      <h2 className="section-title">{tx.txHistory}</h2>
+      <div className="tx-empty">{tx.noTx}</div>
     </div>
   )
 
@@ -65,7 +69,7 @@ function TransactionList({ address }) {
 
   return (
     <div className="tx-section">
-      <h2 className="section-title">Transaction History</h2>
+      <h2 className="section-title">{tx.txHistory}</h2>
       <div className="tx-list">
         {visibleTxs.map((tx, i) => {
           const isOut = tx.from.toLowerCase() === address.toLowerCase()
@@ -128,7 +132,7 @@ function TransactionList({ address }) {
           onMouseEnter={e => e.target.style.background = 'rgba(56, 189, 248, 0.25)'}
           onMouseLeave={e => e.target.style.background = 'var(--cyan-dim)'}
         >
-          {showAll ? '▲ Show Less' : `▼ Show More (${txs.length - 5} more)`}
+          {showAll ? `▲ ${tx.showLess}` : `▼ ${tx.showMore} (${txs.length - 5} ${tx.more})`}
         </button>
       )}
     </div>

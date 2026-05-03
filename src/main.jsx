@@ -6,6 +6,8 @@ import { WagmiProvider } from 'wagmi'
 import { sepolia } from 'wagmi/chains'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App.jsx'
+import { LanguageProvider } from './context/LanguageContext'
+import './App.css'
 
 const config = getDefaultConfig({
   appName: 'DeFi Dashboard',
@@ -20,7 +22,9 @@ createRoot(document.getElementById('root')).render(
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
-          <App />
+          <LanguageProvider>
+            <App />
+          </LanguageProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

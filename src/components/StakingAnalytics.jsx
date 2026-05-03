@@ -1,10 +1,14 @@
 import { useStakingData } from '../hooks/useStakingData'
 import { useAccount } from 'wagmi'
 import { motion } from 'framer-motion'
+import { useLang } from '../context/LanguageContext'
+import t from '../utils/translations'
 
 export default function StakingAnalytics() {
   const { address, isConnected } = useAccount()
   const { stakingData, summary, loading, error } = useStakingData(address)
+  const { lang } = useLang()
+  const tx = t[lang]
 
   const toETH = (weiBigInt) => {
     if (!weiBigInt) return '0'
@@ -30,7 +34,7 @@ export default function StakingAnalytics() {
           marginTop: '20px'
         }}
       >
-        <p>🔌 Connect your wallet to see your personal staking history</p>
+        <p>{tx.connectStaking}</p>
       </motion.div>
     )
   }
@@ -46,7 +50,7 @@ export default function StakingAnalytics() {
         <div style={{ height: '1px', background: 'linear-gradient(90deg, transparent, var(--cyan-dim), transparent)', marginBottom: '40px' }} />
         
         <h2 style={{ color: 'var(--text-primary)', fontSize: '20px', fontWeight: '600', marginBottom: '20px' }}>
-          ⚡ Staking Analytics
+          Staking Analytics
           <span style={{ fontSize: '13px', color: 'var(--cyan)', marginLeft: '12px', fontWeight: '500' }}>
             powered by The Graph
           </span>
@@ -65,7 +69,7 @@ export default function StakingAnalytics() {
         </div>
 
         <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-secondary)' }}>
-          Loading your staking history...
+          {tx.loadingStaking}
         </div>
       </motion.div>
     )
@@ -95,8 +99,8 @@ export default function StakingAnalytics() {
           marginTop: '20px'
         }}
       >
-        <p style={{ fontSize: '18px', marginBottom: '8px' }}>No staking activity yet</p>
-        <p>You haven't staked or unstaked any ETH on this contract.</p>
+        <p style={{ fontSize: '18px', marginBottom: '8px' }}>{tx.noStaking}</p>
+        <p>{tx.noStakingDesc}</p>
       </motion.div>
     )
   }
@@ -112,7 +116,7 @@ export default function StakingAnalytics() {
       <div style={{ height: '1px', background: 'linear-gradient(90deg, transparent, var(--cyan-dim), transparent)', marginBottom: '40px' }} />
 
       <h2 style={{ color: 'var(--text-primary)', fontSize: '20px', fontWeight: '600', marginBottom: '20px' }}>
-        Staking Analytics
+        {tx.stakingTitle}
         <span style={{
           fontSize: '13px',
           color: 'var(--cyan)',
@@ -130,10 +134,10 @@ export default function StakingAnalytics() {
       {/* Summary Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         {[
-          { label: 'Stake Events', value: summary?.totalStakeEvents || 0 },
-          { label: 'Unstake Events', value: summary?.totalUnstakeEvents || 0 },
-          { label: 'Total Staked', value: `${toETH(summary?.totalStakedWei)} ETH` },
-          { label: 'Total Reward', value: `${summary?.totalRewardWei?.toString() || 0} wei` },
+          { label: tx.stakeEvents, value: summary?.totalStakeEvents || 0 },
+          { label: tx.unstakeEvents, value: summary?.totalUnstakeEvents || 0 },
+          { label: tx.totalStaked, value: `${toETH(summary?.totalStakedWei)} ETH` },
+          { label: tx.totalReward, value: `${summary?.totalRewardWei?.toString() || 0} wei` },
         ].map((item) => (
           <div key={item.label} style={{
             background: 'var(--bg-card)',
@@ -154,7 +158,7 @@ export default function StakingAnalytics() {
 
       {/* Recent Stakes */}
       <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '12px', padding: '20px', marginBottom: '16px' }}>
-        <h3 style={{ color: 'var(--text-primary)', fontSize: '15px', marginBottom: '14px' }}>Recent Stakes</h3>
+        <h3 style={{ color: 'var(--text-primary)', fontSize: '15px', marginBottom: '14px' }}>{tx.recentStakes}</h3>
         {stakingData.stakeds.map((stake) => (
           <div key={stake.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid var(--border)', fontSize: '13px' }}>
             <span style={{ color: 'var(--text-secondary)', fontFamily: 'monospace' }}>{shortAddr(stake.user)}</span>
@@ -166,7 +170,7 @@ export default function StakingAnalytics() {
 
       {/* Recent Unstakes */}
       <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '12px', padding: '20px' }}>
-        <h3 style={{ color: 'var(--text-primary)', fontSize: '15px', marginBottom: '14px' }}>Recent Unstakes</h3>
+        <h3 style={{ color: 'var(--text-primary)', fontSize: '15px', marginBottom: '14px' }}>{tx.recentUnstakes}</h3>
         {stakingData.unstakeds.map((unstake) => (
           <div key={unstake.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid var(--border)', fontSize: '13px' }}>
             <span style={{ color: 'var(--text-secondary)', fontFamily: 'monospace' }}>{shortAddr(unstake.user)}</span>

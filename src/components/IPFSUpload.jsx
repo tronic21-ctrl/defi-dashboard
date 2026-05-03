@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useLang } from '../context/LanguageContext'
+import t from '../utils/translations'
 
 const PINATA_JWT = import.meta.env.VITE_PINATA_JWT
 
@@ -9,6 +11,8 @@ function IPFSUpload() {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
+  const { lang } = useLang()
+  const tx = t[lang]
 
   const uploadMetadata = async () => {
     if (!name || !description) return
@@ -60,24 +64,24 @@ function IPFSUpload() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4, duration: 0.5 }}
     >
-      <h2 className="section-title">IPFS Metadata Upload</h2>
+      <h2 className="section-title">{tx.ipfsTitle}</h2>
       <div className="ipfs-card">
         <div className="ipfs-form">
           <div className="form-group">
-            <label className="form-label">NFT Name</label>
+            <label className="form-label">{tx.nftName}</label>
             <input
               className="form-input"
               type="text"
-              placeholder="e.g. Riko NFT #1"
+              placeholder={tx.nftNamePlaceholder}
               value={name}
               onChange={e => setName(e.target.value)}
             />
           </div>
           <div className="form-group">
-            <label className="form-label">Description</label>
+            <label className="form-label">{tx.description}</label>
             <textarea
               className="form-input form-textarea"
-              placeholder="Describe your NFT..."
+              placeholder={tx.descPlaceholder}
               value={description}
               onChange={e => setDescription(e.target.value)}
             />
@@ -87,7 +91,7 @@ function IPFSUpload() {
             onClick={uploadMetadata}
             disabled={loading || !name || !description}
           >
-            {loading ? 'Uploading...' : 'Upload to IPFS'}
+            {loading ? tx.uploading : tx.uploadBtn}
           </button>
         </div>
 
@@ -97,7 +101,7 @@ function IPFSUpload() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <span className="result-label">IPFS Hash</span>
+            <span className="result-label">{tx.ipfsCid}</span>
             <span className="result-hash">{result}</span>
             <a
               className="result-link"
@@ -105,7 +109,7 @@ function IPFSUpload() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              View on IPFS →
+              {tx.viewIPFS} →
             </a>
           </motion.div>
         )}
