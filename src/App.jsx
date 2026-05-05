@@ -6,6 +6,7 @@ import './App.css'
 import TransactionList from './components/TransactionList'
 import IPFSUpload from './components/IPFSUpload'
 import StakingAnalytics from './components/StakingAnalytics'
+import ProtocolAnalytics from './components/ProtocolAnalytics'
 import { useLang } from './context/LanguageContext'
 import t from './utils/translations'
 
@@ -140,6 +141,7 @@ function App() {
             <TransactionList address={address} />
             <IPFSUpload />
             <StakingAnalytics />
+            <ProtocolAnalytics />
           </>
         )}
       </main>

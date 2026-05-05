@@ -118,17 +118,17 @@ export default function StakingAnalytics() {
       <h2 style={{ color: 'var(--text-primary)', fontSize: '20px', fontWeight: '600', marginBottom: '20px' }}>
         {tx.stakingTitle}
         <span style={{
-          fontSize: '13px',
-          color: 'var(--cyan)',
-          marginLeft: '12px',
-          fontWeight: '500',
-          background: 'var(--cyan-dim)',
-          padding: '2px 10px',
-          borderRadius: '20px',
-          border: '1px solid var(--cyan)',
-        }}>
-          powered by The Graph
-        </span>
+        fontSize: '12px',
+        color: 'var(--text-muted)',
+        marginLeft: '12px',
+        fontWeight: '500',
+        background: 'rgba(255,255,255,0.05)',
+        padding: '2px 10px',
+        borderRadius: '20px',
+        border: '1px solid rgba(255,255,255,0.1)',
+      }}>
+        powered by The Graph
+      </span>
       </h2>
 
       {/* Summary Cards */}
@@ -140,19 +140,19 @@ export default function StakingAnalytics() {
           { label: tx.totalReward, value: `${summary?.totalRewardWei?.toString() || 0} wei` },
         ].map((item) => (
           <div key={item.label} style={{
-            background: 'var(--bg-card)',
-            border: '1px solid var(--cyan)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '22px', fontWeight: '700', color: 'var(--cyan)', marginBottom: '6px' }}>
-              {item.value}
-            </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-              {item.label}
-            </div>
+          background: 'var(--bg-card)',
+          border: '1px solid rgba(255,255,255,0.06)',
+          borderRadius: '12px',
+          padding: '20px 16px',
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '26px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '6px', letterSpacing: '-0.02em' }}>
+            {item.value}
           </div>
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            {item.label}
+          </div>
+        </div>
         ))}
       </div>
 
@@ -162,7 +162,7 @@ export default function StakingAnalytics() {
         {stakingData.stakeds.map((stake) => (
           <div key={stake.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid var(--border)', fontSize: '13px' }}>
             <span style={{ color: 'var(--text-secondary)', fontFamily: 'monospace' }}>{shortAddr(stake.user)}</span>
-            <span style={{ color: 'var(--cyan)', fontWeight: '600' }}>+{toETH(stake.amount)} ETH</span>
+            <span style={{ color: 'var(--cyan)', fontWeight: '500', fontSize: '13px' }}>+{toETH(stake.amount)} ETH</span>
             <span style={{ color: 'var(--text-secondary)' }}>Block #{stake.blockNumber}</span>
           </div>
         ))}
@@ -174,8 +174,8 @@ export default function StakingAnalytics() {
         {stakingData.unstakeds.map((unstake) => (
           <div key={unstake.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid var(--border)', fontSize: '13px' }}>
             <span style={{ color: 'var(--text-secondary)', fontFamily: 'monospace' }}>{shortAddr(unstake.user)}</span>
-            <span style={{ color: '#ef4444', fontWeight: '600' }}>-{toETH(unstake.amount)} ETH</span>
-            <span style={{ color: '#22c55e', fontSize: '12px' }}>Reward: {unstake.reward} wei</span>
+            <span style={{ color: '#f87171', fontWeight: '500', fontSize: '13px' }}>-{toETH(unstake.amount)} ETH</span>
+            <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>+{unstake.reward} wei reward</span>
           </div>
         ))}
       </div>
